@@ -116,8 +116,6 @@
   --line-2:     rgba(23,20,18,.06);
   --red:        #c9342b;
   --red-dark:   #9f241d;
-  --wine:       #4b1412;
-  --wine-2:     #2a1715;
   --kakao:      #FEE500;
   --naver:      #03C75A;
   --google:     #f8f9fa;
@@ -1665,7 +1663,7 @@ html[data-theme="dark"] .mobile-nav {
 .vip-stage {
   position: relative;
   width: 100%;
-  min-height: 224px;
+  min-height: 238px;
   transform-style: preserve-3d;
   transition: transform .78s cubic-bezier(.22,1,.28,1);
 }
@@ -1769,7 +1767,7 @@ html[data-theme="dark"] .mobile-nav {
   white-space: nowrap;
 }
 .vip-name-sm {
-  font-size: 30px;
+  font-size: 26px;
   margin-top: 4px;
   opacity: .9;
 }
@@ -1804,11 +1802,14 @@ html[data-theme="dark"] .mobile-nav {
 /* 뒷면 번호 — 필기체 금박, 카드 안에 안전하게 */
 .vip-phone {
   font-family: 'Qwigley', cursive;
-  font-size: clamp(38px, 9vw, 50px);
+  font-size: clamp(34px, 8vw, 44px);
   font-weight: 400;
-  line-height: 1;
+  /* Qwigley는 디센더가 깊어 line-height 1이면 숫자 아랫부분이 잘린다 */
+  line-height: 1.34;
+  padding-bottom: 2px;
   letter-spacing: 1.5px;
   white-space: nowrap;
+  overflow: visible;
   background: linear-gradient(120deg, #b89454 0%, #ead18b 34%, #fff3cf 50%, #ead18b 66%, #a8874c 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -1839,15 +1840,15 @@ html[data-theme="dark"] .mobile-nav {
 
 @media (max-width: 760px) {
   .vip-invite { width: 100%; }
-  .vip-stage { min-height: 210px; }
+  .vip-stage { min-height: 222px; }
   .vip-face { padding: 20px 22px; }
   .vip-name { font-size: 42px; }
-  .vip-name-sm { font-size: 27px; }
+  .vip-name-sm { font-size: 24px; }
 }
 @media (max-width: 380px) {
   .vip-hint { font-size: 10.5px; }
   .vip-name { font-size: 38px; }
-  .vip-phone { font-size: 36px; }
+  .vip-phone { font-size: 32px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .vip-stage { transition: none; }
@@ -1896,6 +1897,48 @@ html[data-theme="dark"] .mobile-nav {
   60%  { transform: translateY(-4%); }
   80%  { transform: translateY(2%); }
   100% { transform: translateY(0); }
+}
+
+/* ── 퇴장: 살짝 반동 후 아래로 내려감 ── */
+.night-modal.closing .night-backdrop { opacity: 0; }
+.night-modal.closing .night-actor {
+  animation: actorSink .62s cubic-bezier(.55,.06,.68,.19) forwards;
+}
+@keyframes actorSink {
+  0%   { transform: translateY(0); }
+  22%  { transform: translateY(-7%); }   /* 인사하듯 반동 */
+  100% { transform: translateY(115%); }
+}
+.night-modal.closing .night-actor-svg {
+  animation: actorBow .62s cubic-bezier(.4,0,.6,1) forwards;
+}
+@keyframes actorBow {
+  0%   { transform: rotate(0deg); }
+  25%  { transform: rotate(-3.5deg); }
+  100% { transform: rotate(1.5deg); }
+}
+.night-modal.closing .night-sign {
+  animation: signExit .34s cubic-bezier(.5,0,.75,0) forwards;
+}
+@keyframes signExit {
+  0%   { opacity: 1; transform: translateX(-50%) translateY(0) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-26px) rotate(-6deg) scale(.9); }
+}
+.night-modal.closing .night-sky,
+.night-modal.closing .night-zzz,
+.night-modal.closing .night-bang,
+.night-modal.closing .night-lines i {
+  animation: none;
+  opacity: 0;
+  transition: opacity .28s ease;
+}
+.night-modal.closing .night-video,
+.night-modal.closing .night-clock,
+.night-modal.closing .night-close {
+  animation: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .26s ease, transform .26s ease;
 }
 .night-actor-svg {
   display: block;
@@ -2058,7 +2101,10 @@ html[data-theme="dark"] .mobile-nav {
   .night-sign-board strong { font-size: 15.5px; margin-bottom: 5px; }
   .night-sign-board p { font-size: 11.5px; line-height: 1.6; }
     .night-bang { top: 26px; right: -20px; font-size: 26px; }
+  .night-candle { left: -28px; bottom: 4px; scale: .84; transform-origin: 50% 100%; }
   .night-video { width: min(100%, 300px); margin-top: 12px; }
+  .night-clock { width: min(100%, 300px); margin-top: 12px; padding: 13px 18px 15px; }
+  .clock-time { font-size: clamp(34px, 10vw, 44px); }
   .night-close { margin-top: 12px; padding: 11px 24px; }
 }
 @media (max-height: 600px) {
@@ -2069,11 +2115,120 @@ html[data-theme="dark"] .mobile-nav {
   .night-sign-board strong { font-size: 14px; margin-bottom: 4px; }
   .night-sign-board p { font-size: 10.5px; line-height: 1.55; }
     .night-video { width: min(100%, 250px); margin-top: 10px; }
+  .night-clock { width: min(100%, 270px); margin-top: 10px; padding: 11px 16px 13px; gap: 3px; }
+  .clock-time { font-size: clamp(30px, 9vw, 38px); }
+  .clock-sub { font-size: 11px; }
   .night-close { margin-top: 10px; padding: 10px 20px; font-size: 13px; }
   .night-stage { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+  .night-candle { left: -22px; scale: .66; }
 }
 @media (max-height: 500px) {
   .night-video { display: none; }
+  .night-clock { margin-top: 8px; padding: 9px 14px 11px; }
+  .clock-time { font-size: 28px; }
+  .clock-label, .clock-sub { font-size: 10.5px; }
+}
+
+/* ── 개문 준비 모드 (08:00~08:59) ── */
+.sign-msg-prep { display: none; }
+.night-modal.prep .sign-msg-night { display: none; }
+.night-modal.prep .sign-msg-prep  { display: block; }
+.night-modal.prep .night-sign-badge {
+  background: #b8863a;
+  color: #fff6e2;
+}
+/* 배경: 새벽빛 → 아침빛으로 서서히 밝아짐 */
+.night-modal.prep .night-backdrop {
+  background:
+    radial-gradient(circle at 50% 4%, rgba(255,206,130,.34), transparent 60%),
+    rgba(38,24,20,.72);
+  animation: dawnWarm 6s ease-in-out infinite alternate;
+}
+@keyframes dawnWarm {
+  0%   { filter: brightness(1); }
+  100% { filter: brightness(1.16); }
+}
+/* 촛대 */
+.night-candle {
+  position: absolute;
+  left: -34px; bottom: 6px;
+  display: none;
+  line-height: 0;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.45));
+}
+.night-modal.prep .night-candle { display: block; }
+.night-modal.prep.show .night-candle {
+  animation: candleIn .6s cubic-bezier(.34,1.4,.5,1) .75s both;
+}
+@keyframes candleIn {
+  0%   { opacity: 0; transform: translateY(16px) scale(.85); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.cd-flame {
+  transform-origin: 20px 32px;
+  transform-box: view-box;
+  animation: flameSway 1.5s ease-in-out infinite;
+}
+.cd-flame-core {
+  transform-origin: 20px 29px;
+  transform-box: view-box;
+  animation: flameSway 1.5s ease-in-out .12s infinite;
+}
+@keyframes flameSway {
+  0%, 100% { transform: rotate(-3.5deg) scaleY(1); }
+  30%      { transform: rotate(2.5deg) scaleY(1.09); }
+  60%      { transform: rotate(-1.5deg) scaleY(.95); }
+}
+.cd-halo { animation: haloPulse 2.4s ease-in-out infinite; }
+@keyframes haloPulse {
+  0%, 100% { opacity: .75; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.14); }
+}
+/* 준비 모드에선 zzz 대신 온기 */
+.night-modal.prep .night-zzz { display: none; }
+
+/* 심야 실시간 시계 (자정~08:59) */
+.night-clock {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: min(100%, 340px);
+  margin-top: 16px;
+  padding: 16px 22px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(234,209,139,.24);
+  background: linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.10), 0 16px 40px rgba(0,0,0,.42);
+  opacity: 0;
+  transform: translateY(12px);
+  text-align: center;
+}
+.night-modal.clock-on .night-clock { display: flex; }
+.night-modal.clock-on.show .night-clock { animation: nightBtnIn .5s ease .95s forwards; }
+.night-modal.clock-on .night-video { display: none; }
+.clock-label {
+  font-size: 11.5px; font-weight: 700;
+  letter-spacing: .16em;
+  color: rgba(234,209,139,.72);
+  text-indent: .16em;
+}
+.clock-time {
+  font-size: clamp(38px, 11vw, 50px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: .01em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: #f4f1ea;
+  text-shadow: 0 0 26px rgba(234,209,139,.22);
+}
+.clock-time .clock-sep { animation: clockBlink 1s step-end infinite; }
+@keyframes clockBlink { 50% { opacity: .25; } }
+.clock-sub {
+  font-size: 12px; font-weight: 600;
+  color: rgba(243,236,224,.5);
+  word-break: keep-all;
 }
 
 /* 닫기 버튼 */
@@ -2200,6 +2355,16 @@ html[data-theme="dark"] .mobile-nav {
   .sky-sun-rays { animation: none; }
   .night-sky { transition: none; }
   .night-modal.show .night-close { opacity: 1; transform: none; }
+  .night-modal.closing .night-actor,
+  .night-modal.closing .night-actor-svg,
+  .night-modal.closing .night-sign { animation: none; }
+  .night-modal.closing .night-stage { opacity: 0; transition: opacity .2s ease; }
+  .night-modal.prep .night-backdrop,
+  .night-modal.prep.show .night-candle,
+  .cd-flame, .cd-flame-core, .cd-halo { animation: none; }
+  .night-modal.prep.show .night-candle { opacity: 1; }
+  .night-modal.clock-on.show .night-clock { animation: none; opacity: 1; transform: none; }
+  .clock-time .clock-sep { animation: none; }
 }
 
 </style>
@@ -2890,8 +3055,8 @@ html[data-theme="dark"] .mobile-nav {
             <span class="vip-brand">연희신당<span class="vip-dot" aria-hidden="true"></span></span>
             <span class="vip-body">
               <span class="vip-kicker">PRIVATE INVITATION</span>
-              <span class="vip-name">Yeonhee Kim</span>
-              <span class="vip-title">예약 번호 확인</span>
+              <span class="vip-name">Yeonhee</span>
+              <span class="vip-title">만신</span>
             </span>
             <span class="vip-foot">
               <span class="vip-hint">카드를 눌러 주세요</span>
@@ -2905,7 +3070,7 @@ html[data-theme="dark"] .mobile-nav {
             <span class="vip-body">
               <span class="vip-kicker">RESERVATION · TEL</span>
               <a href="tel:01039459529" class="vip-phone" id="vipPhone">010.3945.9529</a>
-              <span class="vip-name vip-name-sm">Yeonhee Kim</span>
+              <span class="vip-name vip-name-sm">Yeonhee</span>
             </span>
             <span class="vip-foot">
               <span class="vip-hint">09:00 ~ 20:00 · 2~3일 전 예약</span>
@@ -3054,12 +3219,39 @@ html[data-theme="dark"] .mobile-nav {
         <circle cx="55" cy="21" r="8" fill="#f9e2cc"/>
         <circle cx="145" cy="21" r="8" fill="#f9e2cc"/>
       </svg>
+      <!-- 촛대 (개문 준비 시간에만 등장) -->
+      <span class="night-candle" aria-hidden="true">
+        <svg viewBox="0 0 40 92" width="40" height="92" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="cdGlow" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#ffd77a" stop-opacity=".85"/>
+              <stop offset="1" stop-color="#ffb02e" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="cdFlame" x1="20" y1="8" x2="20" y2="30" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#fff6d0"/>
+              <stop offset=".45" stop-color="#ffd15c"/>
+              <stop offset="1" stop-color="#ff8a1f"/>
+            </linearGradient>
+          </defs>
+          <circle class="cd-halo" cx="20" cy="22" r="18" fill="url(#cdGlow)"/>
+          <path class="cd-flame" d="M20 8 C25 16, 27 21, 27 24.5 C27 29.2, 23.9 32, 20 32 C16.1 32, 13 29.2, 13 24.5 C13 21, 15 16, 20 8 Z" fill="url(#cdFlame)"/>
+          <path class="cd-flame-core" d="M20 18 C22.4 21.6, 23 23.6, 23 25.2 C23 27.6, 21.7 29, 20 29 C18.3 29, 17 27.6, 17 25.2 C17 23.6, 17.6 21.6, 20 18 Z" fill="#fff8de" opacity=".9"/>
+          <path d="M20 32 L20 36" stroke="#4a3320" stroke-width="2" stroke-linecap="round"/>
+          <rect x="14" y="36" width="12" height="34" rx="3" fill="#f3ece0"/>
+          <rect x="14" y="36" width="5" height="34" rx="2.5" fill="#ffffff" opacity=".45"/>
+          <ellipse cx="20" cy="36.5" rx="6" ry="2.2" fill="#e6dcc9"/>
+          <path d="M8 74 C8 71, 12 70, 20 70 C28 70, 32 71, 32 74 L34 82 C34 85, 28 86, 20 86 C12 86, 6 85, 6 82 Z" fill="#a8874c"/>
+          <path d="M8 74 C8 71, 12 70, 20 70 C28 70, 32 71, 32 74 C32 76, 27 77, 20 77 C13 77, 8 76, 8 74 Z" fill="#c9a961"/>
+        </svg>
+      </span>
+
       <!-- 표지판 -->
       <div class="night-sign">
         <div class="night-sign-board">
           <span class="night-sign-badge">필독</span>
           <strong id="nightTitle">영업시간 준수</strong>
-          <p>상담·문의는 09:00~20:00에만 받습니다.<br/>늦은 밤과 새벽 시간의 전화·문자는<br/>받지 않으니 양해 부탁드립니다.</p>
+          <p class="sign-msg sign-msg-night">상담·문의는 09:00~20:00에만 받습니다.<br/>늦은 밤과 새벽 시간의 전화·문자는<br/>받지 않으니 양해 부탁드립니다.</p>
+          <p class="sign-msg sign-msg-prep">오전 9시, 곧 문을 엽니다.<br/>등을 밝히고 손님 맞을 채비를 하는 중이니<br/>조금만 기다려 주세요.</p>
         </div>
       </div>
       <!-- 달 -->
@@ -3069,11 +3261,16 @@ html[data-theme="dark"] .mobile-nav {
         <i></i><i></i><i></i>
       </span>
     </div>
-    <div class="night-video" id="nightVideo">
+    <div class="night-video">
       <iframe id="nightPlayer" title="연희신당 안내 영상"
               allow="autoplay; encrypted-media; picture-in-picture"
               allowfullscreen
               referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+    <div class="night-clock" aria-hidden="true">
+      <span class="clock-label">지금은 상담 시간이 아닙니다</span>
+      <span class="clock-time" id="nightClockTime">00:00:00</span>
+      <span class="clock-sub" id="nightClockSub">오전 9시까지 남은 시간 · 00시간 00분</span>
     </div>
     <button type="button" class="night-close" id="nightCloseBtn">확인했습니다</button>
   </div>
@@ -3269,6 +3466,34 @@ html[data-theme="dark"] .mobile-nav {
     // 하늘: 20:00~05:59 달, 06:00~08:59 해 — 시각에 비례해 포물선 궤적 이동
     const sky = document.getElementById('nightSky');
     let skyTimer = null;
+    let clockTimer = null;
+
+    function pad2(n) { return n < 10 ? '0' + n : String(n); }
+    function clockUpdate() {
+      const el = document.getElementById('nightClockTime');
+      const sub = document.getElementById('nightClockSub');
+      if (!el) return;
+      const now = new Date();
+      const label = document.querySelector('.clock-label');
+      if (label) {
+        label.textContent = (now.getHours() === OPEN_HOUR - 1)
+          ? '맞이할 준비를 하고 있습니다'
+          : '지금은 상담 시간이 아닙니다';
+      }
+      el.innerHTML = pad2(now.getHours()) + '<span class="clock-sep">:</span>' +
+                     pad2(now.getMinutes()) + '<span class="clock-sep">:</span>' +
+                     pad2(now.getSeconds());
+      if (!sub) return;
+      // 오전 9시까지 남은 시간
+      const openAt = new Date(now);
+      openAt.setHours(OPEN_HOUR, 0, 0, 0);
+      if (openAt <= now) openAt.setDate(openAt.getDate() + 1);
+      const left = Math.max(0, openAt - now);
+      const hh = Math.floor(left / 3600000);
+      const mm = Math.floor((left % 3600000) / 60000);
+      sub.textContent = '상담 시작까지 ' + hh + '시간 ' + mm + '분 남았습니다';
+      modal.classList.toggle('prep', now.getHours() === OPEN_HOUR - 1);
+    }
     function skyUpdate() {
       if (!sky) return;
       const now = new Date();
@@ -3294,14 +3519,22 @@ html[data-theme="dark"] .mobile-nav {
       skyUpdate();
       if (skyTimer) clearInterval(skyTimer);
       skyTimer = setInterval(skyUpdate, 30000); // 실시간 갱신 (30초)
-      const player = document.getElementById('nightPlayer');
-      if (player && !player.src) {
-        const h = new Date().getHours();
-        player.src = (h < OPEN_HOUR)
-          // 자정(00:00)~08:59 전용 영상
-          ? 'https://www.youtube-nocookie.com/embed/qOzWZNvpEQE?autoplay=1&playsinline=1&rel=0'
-          // 20:00~23:59: 세 편 연속 재생
-          : 'https://www.youtube-nocookie.com/embed/dQmLAyp-tJY?autoplay=1&playsinline=1&rel=0&playlist=N3eDrp5vmTE,ryCzsqI_eag';
+      const nowH = new Date().getHours();
+      const afterMidnight = nowH < OPEN_HOUR;
+      const prepTime = nowH === OPEN_HOUR - 1; // 08:00~08:59 개문 준비
+      modal.classList.toggle('clock-on', afterMidnight);
+      modal.classList.toggle('prep', prepTime);
+      if (afterMidnight) {
+        // 자정~08:59 — 영상 없이 실시간 시계
+        clockUpdate();
+        if (clockTimer) clearInterval(clockTimer);
+        clockTimer = setInterval(clockUpdate, 1000);
+      } else {
+        // 20:00~23:59 — 세 편 연속 재생
+        const player = document.getElementById('nightPlayer');
+        if (player && !player.src) {
+          player.src = 'https://www.youtube-nocookie.com/embed/dQmLAyp-tJY?autoplay=1&playsinline=1&rel=0&playlist=N3eDrp5vmTE,ryCzsqI_eag';
+        }
       }
       requestAnimationFrame(function () {
         requestAnimationFrame(function () { modal.classList.add('show'); });
@@ -3309,16 +3542,21 @@ html[data-theme="dark"] .mobile-nav {
       document.body.style.overflow = 'hidden';
       window.setTimeout(function () { closeBtn.focus(); }, 1100);
     }
+    let closeTimer = null;
     function closeNight() {
+      if (modal.classList.contains('closing')) return; // 중복 클릭 방지
       if (skyTimer) { clearInterval(skyTimer); skyTimer = null; }
-      modal.classList.remove('show');
+      if (clockTimer) { clearInterval(clockTimer); clockTimer = null; }
       const player = document.getElementById('nightPlayer');
       if (player) player.removeAttribute('src'); // 재생 정지
-      window.setTimeout(function () {
+      modal.classList.add('closing');             // 퇴장 애니메이션 시작
+      if (closeTimer) clearTimeout(closeTimer);
+      closeTimer = window.setTimeout(function () {
+        modal.classList.remove('show', 'closing', 'prep');
         modal.hidden = true;
         document.body.style.overflow = '';
         if (lastNightFocus && lastNightFocus.focus) lastNightFocus.focus();
-      }, 300);
+      }, 640);
     }
     document.addEventListener('click', function (e) {
       const link = e.target.closest('a[href^="tel:"], a[href^="sms:"]');
