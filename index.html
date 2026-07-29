@@ -635,33 +635,43 @@ html[data-theme="dark"] .footer-brand-logo.logo-dark { display: block; }
 .notice-card--alert:hover { box-shadow: 0 16px 38px rgba(201,52,43,.16); }
 .notice-card--alert .notice-num { background: var(--red); color: #fff; }
 .notice-card--alert h3 { color: var(--red-dark); }
+/* 매스컴 사절 카드 */
+.skip-link {
+  position: absolute;
+  left: 16px; top: -60px;
+  z-index: 5000;
+  padding: 11px 18px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: 14px; font-weight: 700;
+  text-decoration: none;
+  transition: top .2s ease;
+}
+.skip-link:focus { top: 16px; }
+
+/* 매스컴 사절 카드 */
+.notice-card--media {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f6f4f1 0%, var(--paper) 62%);
+  border-color: rgba(23,20,18,.16);
+}
+.notice-card--media::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 5px;
+  background: linear-gradient(180deg, #4a433c, #211d19);
+}
+.notice-card--media .notice-num { background: #262220; color: #f4f1ea; }
+.notice-badge--ink {
+  background: rgba(23,20,18,.07);
+  border-color: rgba(23,20,18,.2);
+  color: #3a332d;
+}
 
 /* ──────────────── GALLERY ──────────────── */
-.photo-sub {
-  display: flex; align-items: baseline; gap: 14px;
-  margin: 48px 0 22px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--line-2);
-  flex-wrap: wrap;
-}
-.photo-sub:first-of-type { margin-top: 0; }
-.photo-sub .num {
-  display: inline-grid; place-items: center;
-  width: 26px; height: 26px;
-  background: var(--red); color: #fff;
-  font-weight: 800; font-size: 12px;
-  border-radius: 8px;
-}
-.photo-sub h3 {
-  font-weight: 800;
-  font-size: clamp(20px, 2.5vw, 24px);
-}
-.photo-sub .en {
-  font-size: 13px; color: var(--muted);
-  letter-spacing: .15em;
-  margin-left: auto; font-weight: 500;
-  text-transform: uppercase;
-}
 
 .logo-card {
   background: var(--paper);
@@ -931,7 +941,8 @@ html[data-theme="dark"] .footer-brand-logo.logo-dark { display: block; }
 .reserve-inner {
   position: relative; z-index: 1;
   display: grid;
-  grid-template-columns: 1fr auto;
+  /* minmax(0,1fr): 텍스트의 min-content가 트랙을 부풀려 카드를 밀어내는 것을 차단 */
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 400px);
   gap: 32px;
   align-items: center;
   padding: 68px 0;
@@ -945,11 +956,12 @@ html[data-theme="dark"] .footer-brand-logo.logo-dark { display: block; }
 }
 .reserve-band p { color: rgba(255,255,255,.64); font-size: 16px; }
 
+@media (max-width: 1000px) {
+  .reserve-inner { grid-template-columns: minmax(0, 1fr); }
+  .vip-invite { justify-self: start; max-width: 400px; }
+}
 @media (max-width: 760px) {
-  .reserve-inner { grid-template-columns: 1fr; padding: 56px 0; }
-  
-  
-  
+  .reserve-inner { grid-template-columns: minmax(0, 1fr); padding: 56px 0; }
 }
 
 /* ──────────────── FOOTER ──────────────── */
@@ -1148,6 +1160,96 @@ html[data-theme="dark"] .footer {
 .review-badge svg { color: var(--gold); }
 
 /* ── 후기 드롭다운 ── */
+/* ── 갤러리 아코디언 (신당의 풍경) ── */
+.gallery-acc {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  transition: border-color .3s, box-shadow .3s;
+}
+.gallery-acc[aria-expanded="true"] {
+  border-color: rgba(201,52,43,.24);
+  box-shadow: 0 14px 34px rgba(25,22,19,.09);
+}
+.gallery-toggle {
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 24px 26px;
+  background: transparent;
+  border: 0;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.gallery-toggle-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.gallery-toggle .num {
+  display: grid; place-items: center;
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  background: rgba(201,52,43,.10);
+  color: var(--red);
+  flex: 0 0 auto;
+}
+.gallery-toggle-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.gallery-toggle-text strong {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 18px; font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -.01em;
+}
+.gallery-toggle-text em {
+  font-style: normal;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: .14em;
+  color: var(--muted);
+}
+.gallery-chevron {
+  display: grid; place-items: center;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--paper-2);
+  color: var(--sub);
+  flex: 0 0 auto;
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), background .25s, color .25s;
+}
+.gallery-acc[aria-expanded="true"] .gallery-chevron {
+  transform: rotate(180deg);
+  background: var(--red);
+  color: #fff;
+}
+.gallery-body {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height .5s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+}
+.gallery-acc[aria-expanded="true"] .gallery-body { opacity: 1; }
+.gallery-body-inner {
+  padding: 4px 26px 26px;
+  transform: translateY(-8px);
+  transition: transform .45s cubic-bezier(.2,.8,.2,1);
+}
+.gallery-acc[aria-expanded="true"] .gallery-body-inner { transform: translateY(0); }
+.gallery-body-inner .logo-card { margin-bottom: 18px; }
+.gallery-toggle:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: -4px;
+  border-radius: var(--radius-lg);
+}
+@media (max-width: 760px) {
+  .gallery-toggle { padding: 20px 20px; }
+  .gallery-body-inner { padding: 2px 20px 22px; }
+  .gallery-toggle-text strong { font-size: 16px; }
+}
+html[data-theme="dark"] .gallery-acc { background: var(--paper); border-color: var(--line); }
+html[data-theme="dark"] .gallery-chevron { background: var(--paper-2); }
+html[data-theme="dark"] .gallery-acc[aria-expanded="true"] .gallery-chevron { background: var(--red); color: #fff; }
+@media (prefers-reduced-motion: reduce) {
+  .gallery-body, .gallery-body-inner, .gallery-chevron { transition: none; }
+}
+
 .review-acc { padding: 0; transition: border-color .3s, box-shadow .3s; }
 .review-acc[aria-expanded="true"] { border-color: rgba(3,199,90,.28); box-shadow: 0 14px 34px rgba(25,22,19,.09); }
 .review-toggle {
@@ -1285,6 +1387,13 @@ html[data-theme="dark"] .notice-card--alert {
 html[data-theme="dark"] .notice-card--alert:hover { box-shadow: 0 18px 40px rgba(0,0,0,.42); }
 html[data-theme="dark"] .notice-card--alert .notice-num { background: var(--red); color: #fff; }
 html[data-theme="dark"] .notice-card--alert h3 { color: #ff9d93; }
+html[data-theme="dark"] .notice-card--media {
+  background: linear-gradient(180deg, rgba(255,255,255,.05) 0%, var(--paper) 62%);
+  border-color: rgba(255,255,255,.14);
+}
+html[data-theme="dark"] .notice-card--media::before { background: linear-gradient(180deg, #b8ada0, #6d6459); }
+html[data-theme="dark"] .notice-card--media .notice-num { background: #e8e2d8; color: #1a1714; }
+html[data-theme="dark"] .notice-badge--ink { background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.2); color: #e6ded2; }
 html[data-theme="dark"] .notice-badge {
   background: rgba(201,52,43,.20);
   border-color: rgba(201,52,43,.36);
@@ -1352,7 +1461,7 @@ html[data-theme="dark"] .dark-toggle .icon-moon { display: none; }
 /* ──────────────── PREMIUM RESERVE PHONE BUTTON: BLACK & CHAMPAGNE GOLD ──────────────── */
 
 @media (max-width: 760px) {
-  .reserve-inner { grid-template-columns: 1fr; padding: 56px 0; }
+  .reserve-inner { grid-template-columns: minmax(0, 1fr); padding: 56px 0; }
   
   
 }
@@ -1513,11 +1622,7 @@ html[data-theme="dark"] .footer {
   border-top-color: rgba(240,236,230,.06);
   background: var(--bg);
 }
-/* 갤러리 photo-sub */
-html[data-theme="dark"] .photo-sub {
-  border-bottom-color: rgba(240,236,230,.06);
-}
-/* notice-band 내부 텍스트 fine-tuning */
+html[data-theme="dark"] /* notice-band 내부 텍스트 fine-tuning */
 html[data-theme="dark"] .notice-band {
   border-top-color: rgba(201,52,43,.5);
 }
@@ -1657,7 +1762,9 @@ html[data-theme="dark"] .mobile-nav {
 
 /* ──────────────── VIP CARD (블랙 글로시 명함) ──────────────── */
 .vip-invite {
-  width: min(100%, 400px);
+  width: 100%;
+  max-width: 400px;
+  justify-self: end;
   perspective: 1600px;
 }
 .vip-stage {
@@ -2437,6 +2544,7 @@ html[data-theme="dark"] .mobile-nav {
 </script>
 </head>
 <body>
+<a class="skip-link" href="#main">본문 바로가기</a>
 
 <!-- ────────── HEADER ────────── -->
 <header class="header" id="mainHeader">
@@ -2507,7 +2615,7 @@ html[data-theme="dark"] .mobile-nav {
   </div>
 </nav>
 
-<main id="top">
+<main id="main" id="top">
 
   <!-- ────────── HERO + CAROUSEL ────────── -->
   <section class="hero">
@@ -2748,38 +2856,51 @@ html[data-theme="dark"] .mobile-nav {
       <p>은평구 응암동 연희신당의 외관과 안내 간판을 담았습니다.</p>
     </div>
 
-    <!-- 01. 신당의 풍경 -->
-    <div class="photo-sub reveal">
-      <div class="num">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+    <!-- 01. 신당의 풍경 (아코디언) -->
+    <div class="gallery-acc reveal" aria-expanded="false">
+      <button type="button" class="gallery-toggle" aria-controls="galleryBody">
+        <span class="gallery-toggle-left">
+          <span class="num" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </span>
+          <span class="gallery-toggle-text">
+            <strong>신당의 풍경</strong>
+            <em>Gallery</em>
+          </span>
+        </span>
+        <span class="gallery-chevron" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </span>
+      </button>
+
+      <div class="gallery-body" id="galleryBody" role="region" aria-label="신당의 풍경 사진">
+        <div class="gallery-body-inner">
+          <div class="logo-card">
+            <img src="images/logo-banner.jpg" alt="연희신당 — 이제 신내림 받은 애기무당" loading="lazy" />
+          </div>
+
+          <div class="scenes-grid">
+            <button type="button" class="photo-card js-lightbox"
+                    data-src="images/exterior-flag.jpg"
+                    data-caption="신당 외관 · 깃발">
+              <img src="images/exterior-flag.jpg" alt="연희신당 외관 — 기와 처마와 깃발" loading="lazy" />
+              <div class="cap">
+                <strong>신당 외관 · 깃발</strong>
+                <em>Exterior &amp; Sacred Flag</em>
+              </div>
+            </button>
+            <button type="button" class="photo-card js-lightbox"
+                    data-src="images/signboard.jpg"
+                    data-caption="안내 간판">
+              <img src="images/signboard.jpg" alt="연희신당 안내 간판 — 영혼으로 보고 듣고 느끼고" loading="lazy" />
+              <div class="cap">
+                <strong>안내 간판</strong>
+                <em>Signboard</em>
+              </div>
+            </button>
+          </div>
+        </div>
       </div>
-      <h3>신당의 풍경</h3>
-      <div class="en">Shrine Scenes</div>
-    </div>
-
-    <div class="logo-card reveal">
-      <img src="images/logo-banner.jpg" alt="연희신당 — 이제 신내림 받은 애기무당" loading="lazy" />
-    </div>
-
-    <div class="scenes-grid reveal">
-      <button type="button" class="photo-card js-lightbox"
-              data-src="images/exterior-flag.jpg"
-              data-caption="신당 외관 · 깃발">
-        <img src="images/exterior-flag.jpg" alt="연희신당 외관 — 기와 처마와 깃발" loading="lazy" />
-        <div class="cap">
-          <strong>신당 외관 · 깃발</strong>
-          <em>Exterior &amp; Sacred Flag</em>
-        </div>
-      </button>
-      <button type="button" class="photo-card js-lightbox"
-              data-src="images/signboard.jpg"
-              data-caption="안내 간판">
-        <img src="images/signboard.jpg" alt="연희신당 안내 간판 — 영혼으로 보고 듣고 느끼고" loading="lazy" />
-        <div class="cap">
-          <strong>안내 간판</strong>
-          <em>Signboard</em>
-        </div>
-      </button>
     </div>
 
   </section>
@@ -2932,7 +3053,7 @@ html[data-theme="dark"] .mobile-nav {
           <span class="notice-badge">필독</span>
         </div>
         <h3>영업시간 준수</h3>
-        <p>상담·문의는 09:00~20:00에만 받습니다. 늦은 밤과 새벽 시간의 전화·문자는 받지 않으니 양해 부탁드립니다.</p>
+        <p>예약 문의는 09:00~20:00에만 받습니다. 늦은 밤과 새벽 시간의 전화·문자는 받지 않으니 양해 부탁드립니다.</p>
       </article>
       <article class="notice-card">
         <div class="notice-num">02</div>
@@ -2963,6 +3084,32 @@ html[data-theme="dark"] .mobile-nav {
         <div class="notice-num">07</div>
         <h3>현금 결제 우선</h3>
         <p>상담 후 결제는 현금을 우선합니다. 계좌이체도 가능하니 방문 시 안내받으세요.</p>
+      </article>
+      <article class="notice-card notice-card--media">
+        <div class="notice-head">
+          <div class="notice-num">08</div>
+          <span class="notice-badge notice-badge--ink">사절</span>
+        </div>
+        <h3>매스컴·방송 출연 사절</h3>
+        <p>방송, 유튜브 등 매체 촬영과 출연 제안은 일절 받지 않습니다. 손님의 사연을 다루는 자리인 만큼 촬영과 공개는 어울리지 않습니다. 취재 목적의 방문도 정중히 사양합니다.</p>
+      </article>
+
+      <article class="notice-card notice-card--media">
+        <div class="notice-head">
+          <div class="notice-num">09</div>
+          <span class="notice-badge notice-badge--ink">사절</span>
+        </div>
+        <h3>잡상인·방문판매·전도 사절</h3>
+        <p>물품 판매, 홍보, 종교 권유를 목적으로 한 방문과 연락은 일절 받지 않습니다. 예고 없이 찾아오셔도 응대하지 않으며, 반복될 경우 부득이 필요한 조치를 취합니다.</p>
+      </article>
+
+      <article class="notice-card notice-card--media">
+        <div class="notice-head">
+          <div class="notice-num">10</div>
+          <span class="notice-badge notice-badge--ink">사절</span>
+        </div>
+        <h3>동종업계 확인 목적 방문 사절</h3>
+        <p>실력을 가늠하거나 신당 운영을 알아보려는 목적의 상담은 받지 않습니다. 이 자리는 답답한 마음으로 찾아오신 손님을 위한 자리입니다. 같은 길을 걷는 분이라면 그 뜻을 누구보다 잘 아시리라 믿습니다.</p>
       </article>
     </div>
   </section>
@@ -3253,7 +3400,7 @@ html[data-theme="dark"] .mobile-nav {
         <div class="night-sign-board">
           <span class="night-sign-badge">필독</span>
           <strong id="nightTitle">영업시간 준수</strong>
-          <p class="sign-msg sign-msg-night">상담·문의는 09:00~20:00에만 받습니다.<br/>늦은 밤과 새벽 시간의 전화·문자는<br/>받지 않으니 양해 부탁드립니다.</p>
+          <p class="sign-msg sign-msg-night">예약 문의는 09:00~20:00에만 받습니다.<br/>늦은 밤과 새벽 시간의 전화·문자는<br/>받지 않으니 양해 부탁드립니다.</p>
           <p class="sign-msg sign-msg-prep">오전 9시, 곧 문을 엽니다.<br/>등을 밝히고 손님 맞을 채비를 하는 중이니<br/>조금만 기다려 주세요.</p>
         </div>
       </div>
@@ -3428,6 +3575,30 @@ html[data-theme="dark"] .mobile-nav {
         ans.style.maxHeight = ans.scrollHeight + 'px';
       }
     });
+    btn.setAttribute('aria-expanded', 'false');
+  });
+
+  // ─── Gallery dropdown (신당의 풍경) ───
+  document.querySelectorAll('.gallery-acc').forEach(item => {
+    const btn  = item.querySelector('.gallery-toggle');
+    const body = item.querySelector('.gallery-body');
+    if (!btn || !body) return;
+    function syncHeight() {
+      if (item.getAttribute('aria-expanded') === 'true') {
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    }
+    btn.addEventListener('click', () => {
+      const isOpen = item.getAttribute('aria-expanded') === 'true';
+      item.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      body.style.maxHeight = isOpen ? null : body.scrollHeight + 'px';
+    });
+    // 지연 로딩된 사진이 들어오면 높이 재계산
+    body.querySelectorAll('img').forEach(img => {
+      img.addEventListener('load', syncHeight);
+    });
+    window.addEventListener('resize', syncHeight, { passive: true });
     btn.setAttribute('aria-expanded', 'false');
   });
 
